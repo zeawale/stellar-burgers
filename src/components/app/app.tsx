@@ -1,13 +1,14 @@
-import { ConstructorPage } from '@pages';
-import '../../index.css';
+import React, { FC } from 'react';
 import styles from './app.module.css';
-
 import { AppHeader } from '@components';
+import { AppRoutes } from './routes';
 
-const App = () => (
+const App: FC = () => (
   <div className={styles.app}>
     <AppHeader />
-    <ConstructorPage />
+    <main className={styles.content}>
+      <AppRoutes />
+    </main>
   </div>
 );
 
