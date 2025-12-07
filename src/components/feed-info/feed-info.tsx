@@ -20,7 +20,8 @@ export const FeedInfo: FC = () => {
   const total = useSelector(selectFeedTotal);
   const totalToday = useSelector(selectFeedTotalToday);
 
-  const feed = { total, totalToday };
+  const feed = { orders, total, totalToday };
+
   const readyOrders = getOrders(orders, 'done');
   const pendingOrders = getOrders(orders, 'pending');
 

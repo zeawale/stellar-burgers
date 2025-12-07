@@ -30,12 +30,21 @@ export const registerUser = createAsyncThunk<
   { rejectValue: string }
 >('user/register', async (data, thunkAPI) => {
   try {
-    const res: any = await registerUserApi(data);
-    setCookie('accessToken', res.accessToken);
-    localStorage.setItem('refreshToken', res.refreshToken);
-    return res.user as TUser;
-  } catch (err: any) {
-    return thunkAPI.rejectWithValue(err.message || 'Ошибка регистрации');
+    const res: unknown = await registerUserApi(data);
+
+    const typed = res as {
+      accessToken: string;
+      refreshToken: string;
+      user: TUser;
+    };
+
+    setCookie('accessToken', typed.accessToken);
+    localStorage.setItem('refreshToken', typed.refreshToken);
+
+    return typed.user;
+  } catch (err: unknown) {
+    const error = err as Error;
+    return thunkAPI.rejectWithValue(error.message || 'Ошибка регистрации');
   }
 });
 
@@ -45,12 +54,21 @@ export const loginUser = createAsyncThunk<
   { rejectValue: string }
 >('user/login', async (data, thunkAPI) => {
   try {
-    const res: any = await loginUserApi(data);
-    setCookie('accessToken', res.accessToken);
-    localStorage.setItem('refreshToken', res.refreshToken);
-    return res.user as TUser;
-  } catch (err: any) {
-    return thunkAPI.rejectWithValue(err.message || 'Ошибка авторизации');
+    const res: unknown = await loginUserApi(data);
+
+    const typed = res as {
+      accessToken: string;
+      refreshToken: string;
+      user: TUser;
+    };
+
+    setCookie('accessToken', typed.accessToken);
+    localStorage.setItem('refreshToken', typed.refreshToken);
+
+    return typed.user;
+  } catch (err: unknown) {
+    const error = err as Error;
+    return thunkAPI.rejectWithValue(error.message || 'Ошибка авторизации');
   }
 });
 
@@ -60,9 +78,10 @@ export const getUser = createAsyncThunk<TUser, void, { rejectValue: string }>(
     try {
       const res = await getUserApi();
       return res.user as TUser;
-    } catch (err: any) {
+    } catch (err: unknown) {
+      const error = err as Error;
       return thunkAPI.rejectWithValue(
-        err.message || 'Не удалось получить данные пользователя'
+        error.message || 'Не удалось получить данные пользователя'
       );
     }
   }
@@ -76,9 +95,10 @@ export const updateUser = createAsyncThunk<
   try {
     const res = await updateUserApi(data);
     return res.user as TUser;
-  } catch (err: any) {
+  } catch (err: unknown) {
+    const error = err as Error;
     return thunkAPI.rejectWithValue(
-      err.message || 'Не удалось обновить данные пользователя'
+      error.message || 'Не удалось обновить данные пользователя'
     );
   }
 });
@@ -90,9 +110,10 @@ export const logoutUser = createAsyncThunk<void, void, { rejectValue: string }>(
       await logoutApi();
       setCookie('accessToken', '');
       localStorage.removeItem('refreshToken');
-    } catch (err: any) {
+    } catch (err: unknown) {
+      const error = err as Error;
       return thunkAPI.rejectWithValue(
-        err.message || 'Ошибка выхода из аккаунта'
+        error.message || 'Ошибка выхода из аккаунта'
       );
     }
   }
