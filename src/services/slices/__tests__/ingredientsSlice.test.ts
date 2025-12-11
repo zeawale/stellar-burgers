@@ -1,17 +1,5 @@
-import reducer, { fetchIngredients } from '../ingredientsSlice';
+import reducer, { initialState, fetchIngredients } from '../ingredientsSlice';
 import { TIngredient } from '../../../utils/types';
-
-interface TIngredientsState {
-  items: TIngredient[];
-  loading: boolean;
-  error: string | null;
-}
-
-const initialState: TIngredientsState = {
-  items: [],
-  loading: false,
-  error: null
-};
 
 describe('ingredientsSlice', () => {
   test('initial state', () => {

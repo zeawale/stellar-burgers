@@ -1,5 +1,14 @@
 import { TIngredient } from '../../src/utils/types';
-
+const testUrl = 'http://localhost:4000';
+const SELECTORS = {
+  modal: '[data-cy=modal]',
+  modalTitle: '[data-cy=modal-title]',
+  modalClose: '[data-cy=modal-close]',
+  modalOverlay: '[data-cy=modal-overlay]',
+  constructorIngredients: '[data-cy=constructor-ingredients]',
+  orderPrice: '[data-cy=order-price] p',
+  makeOrderBtn: '[data-cy=make-order-btn]',
+};
 describe('E2E тесты конструктора бургеров', () => {
   let items: TIngredient[];
 
@@ -10,26 +19,26 @@ describe('E2E тесты конструктора бургеров', () => {
 
     cy.intercept(
       'GET',
-      'https://norma.education-services.ru/api/ingredients',
+      'api/ingredients',
       { fixture: 'ingredients.json' }
     ).as('getIngredients');
 
     cy.intercept(
       'GET',
-      'https://norma.education-services.ru/api/auth/user',
+      'api/auth/user',
       { fixture: 'user.json' }
     ).as('authUser');
 
     cy.intercept(
       'POST',
-      'https://norma.education-services.ru/api/orders',
+      'api/orders',
       { fixture: 'order.json' }
     ).as('createOrder');
 
     cy.setCookie('accessToken', 'testAccess');
     localStorage.setItem('refreshToken', 'testRefresh');
 
-    cy.visit('http://localhost:4000/profile');
+    cy.visit(`${testUrl}/profile`);
 
     cy.wait('@authUser', { timeout: 10000 });
 
@@ -66,7 +75,7 @@ describe('E2E тесты конструктора бургеров', () => {
     cy.contains(`${bun.name} (низ)`).should('exist');
 
     total += bun.price * 2;
-    cy.get('[data-cy=order-price] p').should('have.text', total.toString());
+    cy.get(SELECTORS.orderPrice).should('have.text', total.toString());
 
     cy.contains(sauce.name)
       .parents('li')
@@ -74,12 +83,12 @@ describe('E2E тесты конструктора бургеров', () => {
       .contains('Добавить')
       .click({ force: true });
 
-    cy.get('[data-cy=constructor-ingredients]')
+    cy.get(SELECTORS.constructorIngredients)
       .contains(sauce.name, { timeout: 10000 })
       .should('exist');
 
     total += sauce.price;
-    cy.get('[data-cy=order-price] p').should('have.text', total.toString());
+    cy.get(SELECTORS.orderPrice).should('have.text', total.toString());
 
     cy.contains(main.name)
       .parents('li')
@@ -87,12 +96,12 @@ describe('E2E тесты конструктора бургеров', () => {
       .contains('Добавить')
       .click({ force: true });
 
-    cy.get('[data-cy=constructor-ingredients]')
+    cy.get(SELECTORS.constructorIngredients)
       .contains(main.name, { timeout: 10000 })
       .should('exist');
 
     total += main.price;
-    cy.get('[data-cy=order-price] p').should('have.text', total.toString());
+    cy.get(SELECTORS.orderPrice).should('have.text', total.toString());
   });
 
   // 2. Открытие модалки ингредиента
@@ -102,8 +111,8 @@ describe('E2E тесты конструктора бургеров', () => {
 
     cy.contains(sauce.name).click();
 
-    cy.get('[data-cy=modal]', { timeout: 10000 }).should('exist');
-    cy.get('[data-cy=modal-title]').should('contain', 'Детали ингредиента');
+    cy.get(SELECTORS.modal, { timeout: 10000 }).should('exist');
+    cy.get(SELECTORS.modalTitle).should('contain', 'Детали ингредиента');
   });
 
   // 3. Закрытие модалки крестиком
@@ -112,10 +121,10 @@ describe('E2E тесты конструктора бургеров', () => {
     const main = items.find((i) => i.type === 'main')!;
 
     cy.contains(main.name).click();
-    cy.get('[data-cy=modal]', { timeout: 10000 }).should('exist');
+    cy.get(SELECTORS.modal, { timeout: 10000 }).should('exist');
 
-    cy.get('[data-cy=modal-close]').click();
-    cy.get('[data-cy=modal]').should('not.exist');
+    cy.get(SELECTORS.modalClose).click();
+    cy.get(SELECTORS.modal).should('not.exist');
   });
 
   // 4. Закрытие модалки overlay
@@ -124,10 +133,10 @@ describe('E2E тесты конструктора бургеров', () => {
     const bun = items.find((i) => i.type === 'bun')!;
 
     cy.contains(bun.name).click();
-    cy.get('[data-cy=modal]', { timeout: 10000 }).should('exist');
+    cy.get(SELECTORS.modal, { timeout: 10000 }).should('exist');
 
-    cy.get('[data-cy=modal-overlay]').click({ force: true });
-    cy.get('[data-cy=modal]').should('not.exist');
+    cy.get(SELECTORS.modalOverlay).click({ force: true });
+    cy.get(SELECTORS.modal).should('not.exist');
   });
 
   // 5. Закрытие модалки Esc
@@ -136,10 +145,10 @@ describe('E2E тесты конструктора бургеров', () => {
     const sauce = items.find((i) => i.type === 'sauce')!;
 
     cy.contains(sauce.name).click();
-    cy.get('[data-cy=modal]', { timeout: 10000 }).should('exist');
+    cy.get(SELECTORS.modal, { timeout: 10000 }).should('exist');
 
     cy.get('body').type('{esc}');
-    cy.get('[data-cy=modal]').should('not.exist');
+    cy.get(SELECTORS.modal).should('not.exist');
   });
 
   // 6. Оформление заказа
@@ -157,15 +166,15 @@ describe('E2E тесты конструктора бургеров', () => {
         .click({ force: true });
     });
 
-    cy.get('[data-cy=make-order-btn]').click();
+    cy.get(SELECTORS.makeOrderBtn).click();
 
     cy.wait('@createOrder', { timeout: 10000 }).then((res) => {
       const number = res.response?.body.order.number;
       cy.contains(number.toString(), { timeout: 10000 }).should('exist');
     });
 
-    cy.get('[data-cy=modal-close]').click();
-    cy.get('[data-cy=modal]').should('not.exist');
+    cy.get(SELECTORS.modalClose).click();
+    cy.get(SELECTORS.modal).should('not.exist');
 
     cy.contains(`${bun.name} (верх)`).should('not.exist');
     cy.contains(`${bun.name} (низ)`).should('not.exist');
