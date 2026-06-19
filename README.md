@@ -1,19 +1,65 @@
-# Проектная работа 11-го спринта
+<div align="center">
 
-[Макет](<https://www.figma.com/file/vIywAvqfkOIRWGOkfOnReY/React-Fullstack_-Проектные-задачи-(3-месяца)_external_link?type=design&node-id=0-1&mode=design>)
+# stellar-burgers 🍔
 
-[Чеклист](https://www.notion.so/praktikum/0527c10b723d4873aa75686bad54b32e?pvs=4)
+### Cosmic Burger Constructor
 
-## Этапы работы:
+*drag, drop, and build your perfect space burger*
 
-1. Разверните проект и ознакомьтесь с кодом. Все необходимые вам компоненты уже созданы и лежат в папке `src/components`
+![TypeScript](https://img.shields.io/badge/TypeScript-1e1e2e?style=for-the-badge&logo=typescript&logoColor=a6e3a1)
+![React](https://img.shields.io/badge/React-1e1e2e?style=for-the-badge&logo=react&logoColor=a6e3a1)
+![Redux](https://img.shields.io/badge/Redux-1e1e2e?style=for-the-badge&logo=redux&logoColor=a6e3a1)
+![Webpack](https://img.shields.io/badge/Webpack-1e1e2e?style=for-the-badge&logo=webpack&logoColor=a6e3a1)
+![Storybook](https://img.shields.io/badge/Storybook-1e1e2e?style=for-the-badge&logo=storybook&logoColor=a6e3a1)
 
-2. Настройте роутинг.
+</div>
 
-3. Напишите функционал запросов данных с сервера, используя `Redux` и глобальный `store`. Сами "ручки" уже прописаны и лежат в `utils/burger-api.ts`
+---
 
-4. Настройте авторизацию и создайте защищённые роуты.
+## 📋 about
 
-## Важно:
+A space-themed burger constructor SPA. Users drag and drop ingredients to build custom burgers, place orders, and track order history — with full auth flow and protected routes.
 
-Для корректной работы запросов к серверу необходимо добавить переменную BURGER_API_URL в окружение. Сама ссылка находится в файле `.env.example`.
+<!-- Add a screenshot or GIF here -->
+<!-- ![demo](link-to-screenshot) -->
+
+## ✨ features
+
+- 🍔 Drag-and-drop burger constructor
+- 👤 Registration, login, profile management
+- 🔒 Protected routes (order history for logged-in users only)
+- 📋 Real-time order feed via WebSocket
+- 🧩 Component library with Storybook
+
+## 🛠️ tech stack
+
+- **UI:** React 18 + TypeScript
+- **State:** Redux Toolkit
+- **Routing:** React Router v6
+- **Bundler:** Webpack
+- **Components:** Storybook
+- **API:** REST + WebSocket
+
+## 🚀 getting started
+
+```bash
+git clone https://github.com/zeawale/stellar-burgers.git
+cd stellar-burgers
+
+cp .env.example .env
+# add your BURGER_API_URL to .env
+
+npm install
+npm start
+```
+
+```bash
+# run storybook
+npm run storybook
+```
+
+---
+
+<div align="center">
+<sub>Yandex Practicum · Fullstack Developer · Sprint 11</sub>
+</div>
