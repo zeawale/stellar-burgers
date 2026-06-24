@@ -1,0 +1,26 @@
+{
+  "success": true,
+  "data": [
+    {
+      "_id": "bun1",
+      "name": "Флюоресцентная булка",
+      "type": "bun",
+      "price": 2510,
+      "image": ""
+    },
+    {
+      "_id": "sauce1",
+      "name": "Антарктический соус",
+      "type": "sauce",
+      "price": 170,
+      "image": ""
+    },
+    {
+      "_id": "main1",
+      "name": "Метеоритная начинка",
+      "type": "main",
+      "price": 800,
+      "image": ""
+    }
+  ]
+}
